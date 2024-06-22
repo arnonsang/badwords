@@ -34,6 +34,15 @@ func (s *Server) Start(address string) error {
 func (s *Server) setupMiddleware() {
 	s.e.Use(middleware.Logger())
 	s.e.Use(middleware.Recover())
+	s.e.Use(middleware.CORS())
+	s.e.Use(middleware.Secure())
+	s.e.Use(middleware.RequestID())
+	s.e.Use(middleware.CSRF())
+	s.e.Use(middleware.Gzip())
+	s.e.Use(middleware.Decompress())
+	s.e.Use(middleware.BodyLimit("2M"))
+	s.e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(20)))
+	s.e.Use(middleware.Timeout())
 }
 
 func (s *Server) setupRoutes() {
