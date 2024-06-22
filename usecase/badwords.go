@@ -32,11 +32,20 @@ type Sentence struct {
 	BadWords []string
 }
 
+type Replaced struct {
+	Status   int      `json:"status"`
+	Sentence string   `json:"sentence"`
+	Count    int      `json:"count"`
+	BadWords []string `json:"badWords"`
+	Replaced string   `json:"replaced"`
+}
+
 type BadWordsUseCase interface {
 	GetWord(n int) NxWord
 	GetWords() WordList
 	CheckWord(word string) Word
 	CheckSentence(sentence string) Sentence
+	Replacer(sentence string) Replaced
 }
 
 type badWordsUseCase struct{}
@@ -71,8 +80,9 @@ func (uc *badWordsUseCase) CheckSentence(sentence string) Sentence {
 }
 
 func (uc *badWordsUseCase) isBadWord(word string) bool {
+	lowercaseWord := strings.ToLower(word)
 	for _, badWord := range assets.BadWords {
-		if word == badWord {
+		if lowercaseWord == badWord {
 			return true
 		}
 	}
@@ -81,9 +91,10 @@ func (uc *badWordsUseCase) isBadWord(word string) bool {
 
 func (uc *badWordsUseCase) detectBadWords(sentence string) []string {
 	badWords := []string{}
+	lowercaseSentence := strings.ToLower(sentence)
 	for _, word := range assets.BadWords {
-		re := regexp.MustCompile(`\b` + regexp.QuoteMeta(word) + `\b`)
-		if re.MatchString(strings.ToLower(sentence)) {
+		re := regexp.MustCompile(`\b` + regexp.QuoteMeta(strings.ToLower(word)) + `\b`)
+		if re.MatchString(lowercaseSentence) {
 			badWords = append(badWords, word)
 		}
 	}
@@ -93,4 +104,14 @@ func (uc *badWordsUseCase) detectBadWords(sentence string) []string {
 func (uc *badWordsUseCase) countBadWords(sentence string) int {
 	badWords := uc.detectBadWords(sentence)
 	return len(badWords)
+}
+
+func (uc *badWordsUseCase) Replacer(sentence string) Replaced {
+	badWords := uc.detectBadWords(sentence)
+	replaced := sentence
+	for _, word := range badWords {
+		re := regexp.MustCompile(`(?i)\b` + regexp.QuoteMeta(word) + `\b`)
+		replaced = re.ReplaceAllString(replaced, strings.Repeat("*", len(word)))
+	}
+	return Replaced{Status: http.StatusOK, Sentence: sentence, Count: len(badWords), BadWords: badWords, Replaced: replaced}
 }

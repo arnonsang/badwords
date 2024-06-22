@@ -33,6 +33,33 @@
             }
         }
 
+        @keyframes flash {
+            0% {
+                background-color: red;
+            }
+
+            50% {
+                background-color: white;
+            }
+
+            100% {
+                background-color: red;
+            }
+        }
+
+        .flash-animation {
+            animation: flash 0.5s infinite;
+            padding: 8px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .flash-background-animation {
+            animation: flash 0.5s infinite;
+            background-color: red;
+        }
+
+
         body {
             animation: gradientAnimation 10s ease infinite;
             background: linear-gradient(to right, #10B981, #3B82F6, #EF4444, #FBBF24, #F472B6, #10B981);
@@ -42,7 +69,7 @@
 </head>
 
 <body class="min-h-screen flex flex-col items-center justify-center">
-    <div class="bg-white p-8 rounded shadow-md w-full md:max-w-lg">
+    <div class="bg-white p-8 rounded shadow-md w-full md:max-w-screen-md md:max-h-lg">
         <header>
             <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">Bad Word Checker</h1>
         </header>
@@ -52,31 +79,29 @@
             bad words from your application.
         </p>
         <div>
-            <p class="text-sm font-semibold text-gray-700">API:</p>
-            <ul class="list-disc pl-4 mt-4">
-                <li>
-                    <b>GET</b> <a href="/healthz" class="bg-gray-300 p-2"><code>/healthz</code></a> - Health check endpoint
-                </li>
-                <li><b>GET</b> <a href="/api/words" class="bg-gray-300 p-2"><code>/api/words</code></a> - Get a list of
-                    bad words</li>
-                <li><b>GET</b> <a href="/api/word/:word" class="bg-gray-300 p-2"><code>/api/word/:word</code></a> -
-                    Check if a word is a bad word</li>
-                <li>
-                    <b>GET</b> <a href="/api/sentence/:sentence" class="bg-gray-300 p-2"><code>/api/sentence/:sentence</code></a> - Check if a sentence contains bad words
-                </li>
-            </ul>
+            <p class="text-md font-bold mt-4 mb-2 text-gray-700">Endpoints</p>
+            <div class="overflow-x-auto">
+                <table class="w-full table-auto">
+                    <tbody id="apiTableBody">
+                        <!-- Table body will be generated dynamically here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <input id="searchInput" type="text" class="w-full p-3 border border-gray-300 rounded my-8 bg-gray-100"
             placeholder="Search for a word...">
         <div id="wordList" class="mb-4 overflow-auto">
             <p class="text-sm font-semibold text-gray-700">Word List:</p>
-            <ul id="wordListItems" class="list-disc pl-4  overflow-x-auto overflow-y-scroll md:max-h-96"></ul>
+            <ul id="wordListItems" class="list-disc pl-4  overflow-x-auto overflow-y-scroll max-h-56"></ul>
         </div>
         <div id="result" class="mt-4 text-lg text-center font-bold text-red-500 underline-red" role="status"></div>
 
         <footer class="text-center text-gray-500 text-sm mt-8">
-            Made with ❤️ by <a href="https://iamickdev.com" target="_blank" class="underline">iamickdev</a>
+            <p>Made with ❤️ by <a href="https://www.iamickdev.com" target="_blank" class="underline">iamickdev</a></p>
+            <p class="mt-4"><a href="https://github.com/arnonsang/badwords">
+                    <img src="/images/github-mark.svg" alt="GitHub" class="w-4 h-4 inline-block align-middle">
+                </a></p>
         </footer>
     </div>
 
@@ -96,24 +121,76 @@
         }
 
         function renderWordList() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
+            const input = document.getElementById('searchInput').value.trim().toLowerCase();
             const wordListItems = document.getElementById('wordListItems');
             wordListItems.innerHTML = '';
             words.forEach(word => {
                 const li = document.createElement('li');
                 li.textContent = word;
-                if (word.toLowerCase().includes(input)) {
-                    li.style.color = '#EF4444';
-                    li.style.fontWeight = 'bold';
+                if (input === '') {
+                    li.classList.add('text-black');
+                } else if (word.toLowerCase().includes(input)) {
+                    const index = word.toLowerCase().indexOf(input);
+                    const part1 = word.substring(0, index);
+                    const part2 = word.substring(index, index + input.length);
+                    const part3 = word.substring(index + input.length);
+                    li.innerHTML = `${part1}<span class="text-red-500 font-bold text-xl">${part2}</span>${part3}`;
                 } else {
+                    li.classList.add('text-black');
                     li.classList.add('hidden');
                 }
                 wordListItems.appendChild(li);
             });
             const resultDiv = document.getElementById('result');
             const result = words.find(word => word.toLowerCase() === input);
-            resultDiv.textContent = result ? `${result} is a bad word` : '';
+            if (result) {
+                resultDiv.textContent = `${result} is a bad word`;
+                resultDiv.classList.add('flash-animation');
+                resultDiv.classList.add('flash-background-animation');
+            } else {
+                resultDiv.classList.remove('flash-animation');
+                resultDiv.classList.remove('flash-background-animation');
+                resultDiv.textContent = '';
+            }
         }
+
+        function generateAPITableBody() {
+            const apiEndpoints = [
+                { method: 'GET', endpoint: '/healthz', description: 'Health check endpoint' },
+                { method: 'GET', endpoint: '/api/words', description: 'Get a list of bad words' },
+                { method: 'GET', endpoint: '/api/word/:word', description: 'Check if a word is a bad word' },
+                { method: 'GET', endpoint: '/api/sentence/:sentence', description: 'Check if a sentence contains bad words' },
+                { method: 'POST', endpoint: '/api/sentence', description: 'Check if a sentence contains bad words' },
+                { method: 'GET', endpoint: '/api/replacer/:sentence', description: 'Replace bad words in a sentence' },
+                { method: 'POST', endpoint: '/api/replacer', description: 'Replace bad words in a sentence' },
+            ];
+
+            const tbody = document.getElementById('apiTableBody');
+
+            apiEndpoints.forEach(endpoint => {
+                const tr = document.createElement('tr');
+                const methodTd = document.createElement('td');
+                methodTd.textContent = endpoint.method;
+                methodTd.classList.add(endpoint.method === 'GET' ? 'text-green-500' : 'text-blue-500');
+                const endpointTd = document.createElement('td');
+                const link = document.createElement('a');
+                link.href = endpoint.endpoint;
+                link.classList.add('bg-gray-300', 'p-2');
+                const code = document.createElement('code');
+                code.textContent = endpoint.endpoint;
+                link.appendChild(code);
+                endpointTd.appendChild(link);
+                const descTd = document.createElement('td');
+                descTd.textContent = endpoint.description;
+                descTd.classList.add('text-gray-700');
+                tr.appendChild(methodTd);
+                tr.appendChild(endpointTd);
+                tr.appendChild(descTd);
+                tbody.appendChild(tr);
+            });
+        }
+
+        generateAPITableBody();
 
         document.getElementById('searchInput').addEventListener('input', renderWordList);
 

@@ -4,9 +4,11 @@
 
 ![Logo](static/favicon-32x32.png)
 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![GitHub stars](https://img.shields.io/github/stars/arnonsang/badwords.svg?style=social)](https://github.com/arnonsang/badwords/stargazers) [![GitHub issues](https://img.shields.io/github/issues/arnonsang/badwords.svg)](https://github.com/arnonsang/badwords/issues) ![GitHub pull requests](https://img.shields.io/github/issues-pr/arnonsang/badwords.svg) ![Visitors](https://visitor-badge.glitch.me/badge?page_id=arnonsang.badwords)
+
 A simple and lightweight API for filtering and checking bad words, built with [Go](https://go.dev/) and [Echo](https://echo.labstack.com/).
 
-[Features](#🌟-features) • [Usage](#🚀-usage) • [Installation](#💻-installation) • [API](#api-endpoints) • [Contributing](#contributing) • [Acknowledgments](#acknowledgments) • [License](#license)
+[Features](#-features) • [Usage](#-usage) • [Installation](#-installation) • [API](#api-endpoints) • [Todo](#-to-do-list) • [Contributing](#-contributing) • [Acknowledgments](#-acknowledgments) • [License](#license)
 
 ![Screenshot](static/screenshot.png)
 
@@ -23,14 +25,31 @@ A simple and lightweight API for filtering and checking bad words, built with [G
 
 ### API Endpoints
 
-- **GET** `/healthz`: Check service health
-- **GET** `/api/words`: Get the list of bad words
-- **GET** `/api/words/:word`: Verify if a specific word is considered inappropriate
-- **GET** `/api/sentence/:sentence`: Check if a sentence contains bad words
+| Method | Endpoint                  | Description                                       |
+| ------ | ------------------------- | ------------------------------------------------- |
+| GET    | `/healthz`                | Health check endpoint                             |
+| GET    | `/api/words`              | Get a list of bad words                          |
+| GET    | `/api/word/:word`         | Check if a word is a bad word                    |
+| GET    | `/api/sentence/:sentence` | Check if a sentence contains bad words            |
+| POST   | `/api/sentence`           | Check if a sentence contains bad words            |
+| GET    | `/api/replacer/:sentence` | Replace bad words in a sentence                   |
+| POST   | `/api/replacer`           | Replace bad words in a sentence                   |
+
+
 
 ### Web Interface
 
 Access the intuitive web interface by navigating to [badword.iamickdev.com](https://badwords.iamickdev.com)
+
+
+## 📝 TODO List
+
+| Task                           | Status          | Description                               |
+|--------------------------------|-----------------|-------------------------------------------|
+| Migrate static word set to database   | ⚙️ In Progress   | Move the static word set to a database for better management and scalability |
+| Create endpoint to let everyone can add more word   | ⚙️ In Progress  | Implement an API endpoint to allow users to add additional bad words dynamically |
+| Add languages detector and support more languages   | 🟡 Pending     | Integrate language detection to support filtering bad words in multiple languages |
+
 
 ## 💻 Installation
 
@@ -48,7 +67,7 @@ docker-compose up -d
 ```
 4. Access the application at `http://localhost:8089` in your browser.
 
-## Makefile Commands
+## ⚙️ Makefile Commands
 
 | Command | Description |
 |---------|-------------|
@@ -61,13 +80,13 @@ docker-compose up -d
 | `make logs` | Tails the logs of the running containers |
 | `make status` | Shows the status of the running containers |
 
-## Dependencies
+## 📦 Dependencies
 
 - [Go](https://golang.org/) - The programming language powering the server
 - [Echo](https://echo.labstack.com/) - High performance, extensible, minimalist Go web framework
 - [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapid UI development
 
-## Project Structure
+## 📁 Project Structure
 ```bash
 ├── assets
 │   └── badwords.go
@@ -75,6 +94,7 @@ docker-compose up -d
 ├── Dockerfile
 ├── go.mod
 ├── go.sum
+├── LICENSE
 ├── main.go
 ├── Makefile
 ├── presentation
@@ -87,22 +107,24 @@ docker-compose up -d
 │   ├── favicon-16x16.png
 │   ├── favicon-32x32.png
 │   ├── favicon.ico
+│   ├── images
+│   │   └── github-mark.svg
 │   ├── index.html
 │   ├── screenshot.png
 │   └── site.webmanifest
 └── usecase
-└── badwords.go
+    └── badwords.go
 ```
 
-## Contributing
+## 🎉 Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check [issues page](https://github.com/arnonsang/badwords/issues) or open [pull request](https://github.com/arnonsang/badwords/pulls).
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 We'd like to tip our hats to:
 

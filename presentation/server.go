@@ -14,6 +14,10 @@ type Server struct {
 	usecase usecase.BadWordsUseCase
 }
 
+type SentenceRequest struct {
+	Sentence string `json:"sentence" validate:"required"`
+}
+
 func NewServer(usecase usecase.BadWordsUseCase) *Server {
 	return &Server{
 		e:       echo.New(),
@@ -38,6 +42,9 @@ func (s *Server) setupRoutes() {
 	s.e.GET("/api/words", s.getWords)
 	s.e.GET("/api/word/:word", s.checkWord)
 	s.e.GET("/api/sentence/:sentence", s.checkSentence)
+	s.e.POST("/api/sentence", s.checkSentence)
+	s.e.GET("/api/replacer/:sentence", s.sentenceReplacer)
+	s.e.POST("/api/replacer", s.sentenceReplacer)
 	s.e.GET("/healthz", func(c echo.Context) error {
 		return c.String(http.StatusOK, "OK")
 	})
@@ -65,6 +72,39 @@ func (s *Server) checkWord(c echo.Context) error {
 }
 
 func (s *Server) checkSentence(c echo.Context) error {
-	sentence := c.Param("sentence")
-	return c.JSON(http.StatusOK, s.usecase.CheckSentence(sentence))
+	var sentenceReq SentenceRequest
+
+	if c.Request().Method == "POST" {
+		if err := c.Bind(&sentenceReq); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request body"})
+		}
+
+		if sentenceReq.Sentence == "" {
+			return c.JSON(http.StatusBadRequest, map[string]string{"error": "body.sentence is required, This service only accept JSON format"})
+		}
+
+	} else {
+		sentenceReq.Sentence = c.Param("sentence")
+	}
+
+	return c.JSON(http.StatusOK, s.usecase.CheckSentence(sentenceReq.Sentence))
+}
+
+func (s *Server) sentenceReplacer(c echo.Context) error {
+	var sentenceReq SentenceRequest
+
+	if c.Request().Method == "POST" {
+		if err := c.Bind(&sentenceReq); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request body"})
+		}
+
+		if sentenceReq.Sentence == "" {
+			return c.JSON(http.StatusBadRequest, map[string]string{"error": "body.sentence is required, This service only accept JSON format"})
+		}
+
+	} else {
+		sentenceReq.Sentence = c.Param("sentence")
+	}
+
+	return c.JSON(http.StatusOK, s.usecase.Replacer(sentenceReq.Sentence))
 }
