@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Bad Word Checker | iamickdev</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        .bg-red-100 {
+            background-color: #FEE2E2;
+        }
+
+        .underline-red {
+            text-decoration-color: #EF4444;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        body {
+            animation: gradientAnimation 10s ease infinite;
+            background: linear-gradient(to right, #10B981, #3B82F6, #EF4444, #FBBF24, #F472B6, #10B981);
+            background-size: 300% 300%;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-center">
+    <div class="bg-white p-8 rounded shadow-md w-full md:max-w-lg">
+        <header>
+            <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">Bad Word Checker</h1>
+        </header>
+        <p class="text-sm font-semibold text-gray-700" role="alert">
+            Welcome to the simple bad word API. This API provides <span id="wordCount"
+                class="text-md bg-gray-300 p-1 px-2 font-bold"></span> simple bad words that you can use to filter out
+            bad words from your application.
+        </p>
+        <div>
+            <p class="text-sm font-semibold text-gray-700">API:</p>
+            <ul class="list-disc pl-4 mt-4">
+                <li>
+                    <b>GET</b> <a href="/healthz" class="bg-gray-300 p-2"><code>/healthz</code></a> - Health check endpoint
+                </li>
+                <li><b>GET</b> <a href="/api/words" class="bg-gray-300 p-2"><code>/api/words</code></a> - Get a list of
+                    bad words</li>
+                <li><b>GET</b> <a href="/api/word/:word" class="bg-gray-300 p-2"><code>/api/word/:word</code></a> -
+                    Check if a word is a bad word</li>
+                <li>
+                    <b>GET</b> <a href="/api/sentence/:sentence" class="bg-gray-300 p-2"><code>/api/sentence/:sentence</code></a> - Check if a sentence contains bad words
+                </li>
+            </ul>
+        </div>
+
+        <input id="searchInput" type="text" class="w-full p-3 border border-gray-300 rounded my-8 bg-gray-100"
+            placeholder="Search for a word...">
+        <div id="wordList" class="mb-4 overflow-auto">
+            <p class="text-sm font-semibold text-gray-700">Word List:</p>
+            <ul id="wordListItems" class="list-disc pl-4  overflow-x-auto overflow-y-scroll md:max-h-96"></ul>
+        </div>
+        <div id="result" class="mt-4 text-lg text-center font-bold text-red-500 underline-red" role="status"></div>
+
+        <footer class="text-center text-gray-500 text-sm mt-8">
+            Made with ❤️ by <a href="https://iamickdev.com" target="_blank" class="underline">iamickdev</a>
+        </footer>
+    </div>
+
+    <script>
+        let words = [];
+
+        async function fetchWords() {
+            try {
+                const response = await fetch('/api/words');
+                const wordRes = await response.json();
+                words = wordRes.words;
+                document.getElementById('wordCount').textContent = words.length;
+                renderWordList();
+            } catch (error) {
+                console.error('Error fetching words:', error);
+            }
+        }
+
+        function renderWordList() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const wordListItems = document.getElementById('wordListItems');
+            wordListItems.innerHTML = '';
+            words.forEach(word => {
+                const li = document.createElement('li');
+                li.textContent = word;
+                if (word.toLowerCase().includes(input)) {
+                    li.style.color = '#EF4444';
+                    li.style.fontWeight = 'bold';
+                } else {
+                    li.classList.add('hidden');
+                }
+                wordListItems.appendChild(li);
+            });
+            const resultDiv = document.getElementById('result');
+            const result = words.find(word => word.toLowerCase() === input);
+            resultDiv.textContent = result ? `${result} is a bad word` : '';
+        }
+
+        document.getElementById('searchInput').addEventListener('input', renderWordList);
+
+        window.addEventListener('DOMContentLoaded', fetchWords);
+    </script>
+</body>
+
+</html>

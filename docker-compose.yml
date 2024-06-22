@@ -1,0 +1,15 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bad-word-checker
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./static:/app/static
+      - ./assets:/app/assets
+    environment:
+      - ENV_VAR=value
+    restart: unless-stopped
