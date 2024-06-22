@@ -8,6 +8,11 @@ import (
 	"github.com/arnonsang/badwords/assets"
 )
 
+type NxWord struct {
+	Status int      `json:"status"`
+	Words  []string `json:"word"`
+}
+
 type WordList struct {
 	Status int      `json:"status"`
 	Count  int      `json:"count"`
@@ -28,6 +33,7 @@ type Sentence struct {
 }
 
 type BadWordsUseCase interface {
+	GetWord(n int) NxWord
 	GetWords() WordList
 	CheckWord(word string) Word
 	CheckSentence(sentence string) Sentence
@@ -37,6 +43,18 @@ type badWordsUseCase struct{}
 
 func NewBadWordsUseCase() BadWordsUseCase {
 	return &badWordsUseCase{}
+}
+
+func (uc *badWordsUseCase) GetWord(n int) NxWord {
+	wordCount := len(assets.BadWords)
+	if n > wordCount {
+		n = wordCount
+	}
+	words := make([]string, n)
+	for i := 0; i < n; i++ {
+		words[i] = assets.BadWords[i]
+	}
+	return NxWord{Status: http.StatusOK, Words: words}
 }
 
 func (uc *badWordsUseCase) GetWords() WordList {
