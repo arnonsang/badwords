@@ -63,7 +63,7 @@ cd your_project_dir
 ```
 3. Build and run via docker compose:
 ```bash
-docker-compose up -d
+make up
 ```
 4. Access the application at `http://localhost:8089` in your browser.
 

@@ -1,8 +1,10 @@
 package usecase
 
 import (
+	"math/rand"
 	"net/http"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/arnonsang/badwords/assets"
@@ -10,6 +12,7 @@ import (
 
 type NxWord struct {
 	Status int      `json:"status"`
+	Error  string   `json:"error"`
 	Words  []string `json:"word"`
 }
 
@@ -56,13 +59,23 @@ func NewBadWordsUseCase() BadWordsUseCase {
 
 func (uc *badWordsUseCase) GetWord(n int) NxWord {
 	wordCount := len(assets.BadWords)
+	var e string
 	if n > wordCount {
 		n = wordCount
+		e = "Your request is greater than the number of bad words available in the list we have " + strconv.Itoa(wordCount) + " words. Feel free to contribute more bad words to the list at htts://github.com/arnonsang/badwords"
 	}
+
+	rand.Shuffle(wordCount, func(i, j int) {
+		assets.BadWords[i], assets.BadWords[j] = assets.BadWords[j], assets.BadWords[i]
+	})
+
 	words := make([]string, n)
-	for i := 0; i < n; i++ {
-		words[i] = assets.BadWords[i]
+	copy(words, assets.BadWords[:n])
+
+	if len(e) > 0 {
+		return NxWord{Status: http.StatusPartialContent, Error: e, Words: words}
 	}
+
 	return NxWord{Status: http.StatusOK, Words: words}
 }
 
