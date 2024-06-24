@@ -2,9 +2,20 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Bad Word Checker | iamickdev</title>
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="Simple Bad Word Checker | iamickdev">
+    <meta property="og:description" content="Check for bad words in your application using our simple bad word checker API. Get a list of bad words and filter out inappropriate content effectively.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.iamickdev.com">
+    <meta property="og:image" content="https://www.iamickdev.com/images/og-image.png">
+
+    <!-- Twitter Card Metadata -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Simple Bad Word Checker | iamickdev">
+    <meta name="twitter:description" content="Check for bad words in your application using our simple bad word checker API. Get a list of bad words and filter out inappropriate content effectively.">
+    <meta name="twitter:image" content="https://www.iamickdev.com/images/twitter-image.png">
+    <meta name="twitter:site" content="@iamickdev">
+
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -59,7 +70,6 @@
             background-color: red;
         }
 
-
         body {
             animation: gradientAnimation 10s ease infinite;
             background: linear-gradient(to right, #10B981, #3B82F6, #EF4444, #FBBF24, #F472B6, #10B981);
@@ -71,12 +81,12 @@
 <body class="min-h-screen flex flex-col items-center justify-center">
     <div class="bg-white p-8 rounded shadow-md w-full md:max-w-screen-md md:max-h-lg">
         <header>
-            <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">Bad Word Checker</h1>
+            <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">Bad Word Checker API</h1>
         </header>
         <p class="text-sm font-semibold text-gray-700" role="alert">
             Welcome to the simple bad word API. This API provides <span id="wordCount"
                 class="text-md bg-gray-300 p-1 px-2 font-bold"></span> simple bad words that you can use to filter out
-            bad words from your application.
+            inappropriate content from your application.
         </p>
         <div>
             <p class="text-md font-bold mt-4 mb-2 text-gray-700">Endpoints</p>
@@ -93,7 +103,7 @@
             placeholder="Search for a word...">
         <div id="wordList" class="mb-4 overflow-auto">
             <p class="text-sm font-semibold text-gray-700">Word List:</p>
-            <ul id="wordListItems" class="list-disc pl-4  overflow-x-auto overflow-y-scroll max-h-56"></ul>
+            <ul id="wordListItems" class="list-disc pl-4 overflow-x-auto overflow-y-scroll max-h-56"></ul>
         </div>
         <div id="result" class="mt-4 text-lg text-center font-bold text-red-500 underline-red" role="status"></div>
 
