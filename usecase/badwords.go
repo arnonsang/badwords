@@ -49,6 +49,7 @@ type BadWordsUseCase interface {
 	CheckWord(word string) Word
 	CheckSentence(sentence string) Sentence
 	Replacer(sentence string) Replaced
+	ReplacerWithCustom(sentence string, custom string) Replaced
 }
 
 type badWordsUseCase struct{}
@@ -125,6 +126,16 @@ func (uc *badWordsUseCase) Replacer(sentence string) Replaced {
 	for _, word := range badWords {
 		re := regexp.MustCompile(`(?i)\b` + regexp.QuoteMeta(word) + `\b`)
 		replaced = re.ReplaceAllString(replaced, strings.Repeat("*", len(word)))
+	}
+	return Replaced{Status: http.StatusOK, Sentence: sentence, Count: len(badWords), BadWords: badWords, Replaced: replaced}
+}
+
+func (uc *badWordsUseCase) ReplacerWithCustom(sentence string, custom string) Replaced {
+	badWords := uc.detectBadWords(sentence)
+	replaced := sentence
+	for _, word := range badWords {
+		re := regexp.MustCompile(`(?i)\b` + regexp.QuoteMeta(word) + `\b`)
+		replaced = re.ReplaceAllString(replaced, custom)
 	}
 	return Replaced{Status: http.StatusOK, Sentence: sentence, Count: len(badWords), BadWords: badWords, Replaced: replaced}
 }

@@ -1,8 +1,10 @@
 package presentation
 
 import (
+	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/arnonsang/badwords/usecase"
 	"github.com/labstack/echo/v4"
@@ -42,7 +44,14 @@ func (s *Server) setupMiddleware() {
 	s.e.Use(middleware.Decompress())
 	s.e.Use(middleware.BodyLimit("2M"))
 	s.e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(20)))
-	s.e.Use(middleware.Timeout())
+	s.e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{
+		Skipper:      middleware.DefaultSkipper,
+		ErrorMessage: "Request timeout after 30 seconds, please try again later",
+		OnTimeoutRouteErrorHandler: func(err error, c echo.Context) {
+			log.Println(c.Path())
+		},
+		Timeout: 30 * time.Second,
+	}))
 }
 
 func (s *Server) setupRoutes() {
@@ -111,8 +120,15 @@ func (s *Server) sentenceReplacer(c echo.Context) error {
 			return c.JSON(http.StatusBadRequest, map[string]string{"error": "body.sentence is required, This service only accept JSON format"})
 		}
 
+		if custom := c.Param("replacer"); custom != "" {
+			return c.JSON(http.StatusOK, s.usecase.ReplacerWithCustom(sentenceReq.Sentence, custom))
+		}
+
 	} else {
 		sentenceReq.Sentence = c.Param("sentence")
+		if custom := c.Param("replacer"); custom != "" {
+			return c.JSON(http.StatusOK, s.usecase.ReplacerWithCustom(sentenceReq.Sentence, custom))
+		}
 	}
 
 	return c.JSON(http.StatusOK, s.usecase.Replacer(sentenceReq.Sentence))

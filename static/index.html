@@ -5,13 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Bad Word Checker | iamickdev</title>
-    <meta name="description" content="Check for bad words in your application using our simple bad word checker API. Get a list of bad words and filter out inappropriate content effectively.">
+    <meta name="description"
+        content="Check for bad words in your application using our simple bad word checker API. Get a list of bad words and filter out inappropriate content effectively.">
     <meta name="keywords" content="bad word checker, bad words API, inappropriate content filter, iamickdev">
     <meta name="author" content="iamickdev">
 
     <!-- Open Graph Metadata -->
     <meta property="og:title" content="Simple Bad Word Checker | iamickdev">
-    <meta property="og:description" content="Check for bad words in your application using our simple bad word checker API. Get a list of bad words and filter out inappropriate content effectively.">
+    <meta property="og:description"
+        content="Check for bad words in your application using our simple bad word checker API. Get a list of bad words and filter out inappropriate content effectively.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.iamickdev.com">
     <meta property="og:image" content="https://www.iamickdev.com/images/og-image.png">
@@ -19,7 +21,8 @@
     <!-- Twitter Card Metadata -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Simple Bad Word Checker | iamickdev">
-    <meta name="twitter:description" content="Check for bad words in your application using our simple bad word checker API. Get a list of bad words and filter out inappropriate content effectively.">
+    <meta name="twitter:description"
+        content="Check for bad words in your application using our simple bad word checker API. Get a list of bad words and filter out inappropriate content effectively.">
     <meta name="twitter:image" content="https://www.iamickdev.com/images/twitter-image.png">
     <meta name="twitter:site" content="@iamickdev">
 
@@ -29,14 +32,6 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <style>
-        .bg-red-100 {
-            background-color: #FEE2E2;
-        }
-
-        .underline-red {
-            text-decoration-color: #EF4444;
-        }
-
         @keyframes gradientAnimation {
             0% {
                 background-position: 0% 50%;
@@ -51,18 +46,26 @@
             }
         }
 
-        @keyframes flash {
-            0% {
-                background-color: red;
-            }
+        body {
+            animation: gradientAnimation 10s ease infinite;
+            background: linear-gradient(to right, #10B981, #3B82F6, #EF4444, #FBBF24, #F472B6, #10B981);
+            background-size: 300% 300%;
+        }
 
-            50% {
-                background-color: white;
-            }
+        .json-key {
+            color: #92278f;
+        }
 
-            100% {
-                background-color: red;
-            }
+        .json-string {
+            color: #3ab54a;
+        }
+
+        .json-number {
+            color: #25aae2;
+        }
+
+        .json-boolean {
+            color: #f98280;
         }
 
         .flash-animation {
@@ -77,27 +80,45 @@
             background-color: red;
         }
 
-        body {
-            animation: gradientAnimation 10s ease infinite;
-            background: linear-gradient(to right, #10B981, #3B82F6, #EF4444, #FBBF24, #F472B6, #10B981);
-            background-size: 300% 300%;
+        header,
+        footer {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+        }
+
+        nav a {
+            margin: 0 0.5rem;
+            color: #3B82F6;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col items-center justify-center">
-    <div class="bg-white p-8 rounded shadow-md w-full md:max-w-screen-md md:max-h-lg">
-        <header>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <header class="w-full flex items-center justify-between mb-4 rounded w-full md:max-w-screen-md">
+        <nav>
+            <a href="/">Home</a>
+            <a href="/docs">Documentation</a>
+        </nav>
+    </header>
+    <main class="bg-white p-8 rounded shadow-md w-full md:max-w-screen-md">
+        <div>
             <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">Bad Word Checker API</h1>
-        </header>
-        <p class="text-sm font-semibold text-gray-700" role="alert">
+        </div>
+        <p class="text-sm font-semibold text-gray-700 mb-4" role="alert">
             Welcome to the simple bad word API. This API provides <span id="wordCount"
                 class="text-md bg-gray-300 p-1 px-2 font-bold"></span> simple bad words that you can use to filter out
             inappropriate content from your application.
         </p>
         <div>
             <p class="text-md font-bold mt-4 mb-2 text-gray-700">Endpoints</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto  max-h-36 overflow-y-scroll">
                 <table class="w-full table-auto">
                     <tbody id="apiTableBody">
                         <!-- Table body will be generated dynamically here -->
@@ -110,34 +131,90 @@
             placeholder="Search for a word...">
         <div id="wordList" class="mb-4 overflow-auto">
             <p class="text-sm font-semibold text-gray-700">Word List:</p>
-            <ul id="wordListItems" class="list-disc pl-4 overflow-x-auto overflow-y-scroll max-h-56"></ul>
+            <ul id="wordListItems" class="list-disc pl-4 overflow-x-auto overflow-y-scroll max-h-40"></ul>
         </div>
         <div id="result" class="mt-4 text-lg text-center font-bold text-red-500 underline-red" role="status"></div>
 
         <footer class="text-center text-gray-500 text-sm mt-8">
-            <p>Made with ❤️ by <a href="https://www.iamickdev.com" target="_blank" class="underline">iamickdev</a></p>
-            <p class="mt-4"><a href="https://github.com/arnonsang/badwords">
-                    <img src="/images/github-mark.svg" alt="GitHub" class="w-4 h-4 inline-block align-middle">
-                </a></p>
+            <p>Made with <a href="https://go.dev"><img src="/images/Go-Logo_Black.svg" alt="Go"
+                        class="w-10 h-10 inline-block align-middle"></a>
+                <a href="https://echo.labstack.com/"><img src="/images/echo-logo-light.svg" alt="Echo"
+                        class="w-10 h-10 inline-block align-middle"></a>&nbsp;❤️ by <a href="https://www.iamickdev.com"
+                    target="_blank" class="underline">iamickdev</a>
+            </p>
+            <p class="mt-4">
+                <a href="https://github.com/arnonsang/badwords"><img src="/images/github-mark.svg" alt="GitHub"
+                        class="w-4 h-4 inline-block align-middle"></a>
+            </p>
         </footer>
-    </div>
+    </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         let words = [];
 
-        async function fetchWords() {
+        const fetchWords = async () => {
             try {
                 const response = await fetch('/api/words');
                 const wordRes = await response.json();
                 words = wordRes.words;
                 document.getElementById('wordCount').textContent = words.length;
                 renderWordList();
+                const isWelcomeMessageShown = localStorage.getItem("iamickdev_bw_timestamps");
+                //Welcome message for the user
+                if (!isWelcomeMessageShown) {
+                    Swal.fire({
+                        title: 'Welcome!',
+                        html: `
+        <div style="text-align: left;">
+            <p>Welcome to the <strong>Simple Bad Word Checker API</strong>!</p>
+            <p>Use our API to check for bad words in your application. Get a list of bad words and filter out inappropriate content effectively. This API provides <span id="wordCount"
+                class="text-md bg-gray-200 p-1 px-2 font-bold">${wordRes.count}</span>&nbsp;simple bad words that you can use to filter out
+            inappropriate content from your application.</p> 
+            <br><p>Visit our <a href="/docs" target="_blank" style="color: #3B82F6; text-decoration: underline;">API Documentation</a> for detailed information about the endpoints, including required parameters and response formats.</p>
+        </div>
+    `,
+                        icon: 'info',
+                        confirmButtonText: 'Got it!'
+                    });
+                    localStorage.setItem("iamickdev_bw_timestamps", Date.now())
+                } else {
+                    //if more than 7 day, show the welcome message again
+                    if (Date.now() - parseInt(isWelcomeMessageShown) > 604800000) {
+                        Swal.fire({
+                            title: 'Welcome!',
+                            html: `
+        <div style="text-align: left;">
+            <p>Welcome to the <strong>Simple Bad Word Checker API</strong>!</p>
+            <p>Use our API to check for bad words in your application. Get a list of bad words and filter out inappropriate content effectively. This API provides <span id="wordCount"
+                class="text-md bg-gray-200 p-1 px-2 font-bold">${wordRes.count}</span>&nbsp;simple bad words that you can use to filter out
+            inappropriate content from your application.</p>
+            <br><p>Visit our <a href="/docs" target="_blank" style="color: #3B82F6; text-decoration: underline;">API Documentation</a> for detailed information about the endpoints, including required parameters and response formats.</p>
+        </div>
+    `,
+                            icon: 'info',
+                            confirmButtonText: 'Got it!',
+                        });
+                        localStorage.setItem("iamickdev_bw_timestamps", Date.now())
+                    } else {
+                        //Show the as Swal floating message
+                        Swal.fire({
+                            title: 'Welcome back!',
+                            html: `Today we have <strong>${wordRes.count}</strong> bad words for you to use.`,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            timerProgressBar: true
+                        });
+                    }
+                }
             } catch (error) {
                 console.error('Error fetching words:', error);
             }
         }
 
-        function renderWordList() {
+        const renderWordList = () => {
             const input = document.getElementById('searchInput').value.trim().toLowerCase();
             const wordListItems = document.getElementById('wordListItems');
             wordListItems.innerHTML = '';
@@ -171,47 +248,49 @@
             }
         }
 
-        function generateAPITableBody() {
+        const generateAPITableBody = () => {
             const apiEndpoints = [
                 { method: 'GET', endpoint: '/healthz', description: 'Health check endpoint' },
                 { method: 'GET', endpoint: '/api/words', description: 'Get a list of bad words' },
+                { method: 'GET', endpoint: '/api/word', description: 'Get a random bad word' }, // n param is optional for number of words 
                 { method: 'GET', endpoint: '/api/word/:word', description: 'Check if a word is a bad word' },
                 { method: 'GET', endpoint: '/api/sentence/:sentence', description: 'Check if a sentence contains bad words' },
                 { method: 'POST', endpoint: '/api/sentence', description: 'Check if a sentence contains bad words' },
-                { method: 'GET', endpoint: '/api/replacer/:sentence', description: 'Replace bad words in a sentence' },
-                { method: 'POST', endpoint: '/api/replacer', description: 'Replace bad words in a sentence' },
+                { method: 'GET', endpoint: '/api/replacer/:sentence', description: 'Replace bad words in a sentence' }, // replace param is optional for replacement word with custom symbol
+                { method: 'POST', endpoint: '/api/replacer', description: 'Replace bad words in a sentence' }, // replace param is optional for replacement word with custom symbol
             ];
 
+            const methodColor = (method) => {
+                switch (method) {
+                    case 'GET':
+                        return 'text-green-500';
+                    case 'POST':
+                        return 'text-yellow-500';
+                    case 'PUT':
+                        return 'text-blue-500';
+                    case 'DELETE':
+                        return 'text-red-500';
+                    default:
+                        return 'text-gray-500';
+                }
+            }
+
             const tbody = document.getElementById('apiTableBody');
-
-            apiEndpoints.forEach(endpoint => {
-                const tr = document.createElement('tr');
-                const methodTd = document.createElement('td');
-                methodTd.textContent = endpoint.method;
-                methodTd.classList.add(endpoint.method === 'GET' ? 'text-green-500' : 'text-blue-500');
-                const endpointTd = document.createElement('td');
-                const link = document.createElement('a');
-                link.href = endpoint.endpoint;
-                link.classList.add('bg-gray-300', 'p-2');
-                const code = document.createElement('code');
-                code.textContent = endpoint.endpoint;
-                link.appendChild(code);
-                endpointTd.appendChild(link);
-                const descTd = document.createElement('td');
-                descTd.textContent = endpoint.description;
-                descTd.classList.add('text-gray-700');
-                tr.appendChild(methodTd);
-                tr.appendChild(endpointTd);
-                tr.appendChild(descTd);
-                tbody.appendChild(tr);
-            });
+            tbody.innerHTML = apiEndpoints.map(api => `
+                <tr class="hover:bg-gray-100">
+                    <td class="border px-4 py-2 ${methodColor(api.method)} font-bold"><a href="/docs#${api.endpoint}" title="Click to view documentation.">${api.method}</a></td>
+                    <td class="border px-4 py-2"><a href="/docs#${api.endpoint}" title="Click to view documentation.">${api.endpoint}</a></td>
+                    <td class="border px-4 py-2"><a href="/docs#${api.endpoint}" title="Click to view documentation.">${api.description}</a></td>
+                </tr>
+            `).join('');
         }
-
-        generateAPITableBody();
 
         document.getElementById('searchInput').addEventListener('input', renderWordList);
 
-        window.addEventListener('DOMContentLoaded', fetchWords);
+        window.onload = () => {
+            fetchWords();
+            generateAPITableBody();
+        };
     </script>
 </body>
 
