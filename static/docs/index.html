@@ -1,307 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>API Documentation | Simple Bad Word Checker</title>
-    <meta name="description"
-        content="Detailed documentation for the Simple Bad Word Checker API endpoints, including parameters and response formats.">
-    <meta name="keywords" content="API documentation, bad word checker, iamickdev">
-    <meta name="author" content="iamickdev">
+    <meta
+      name="description"
+      content="Detailed documentation for the Simple Bad Word Checker API endpoints, including parameters and response formats."
+    />
+    <meta
+      name="keywords"
+      content="API documentation, bad word checker, iamickdev"
+    />
+    <meta name="author" content="iamickdev" />
 
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <style>
-        @keyframes gradientAnimation {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+      @keyframes gradientAnimation {
+        0% {
+          background-position: 0% 50%;
         }
 
-        body {
-            animation: gradientAnimation 10s ease infinite;
-            background: linear-gradient(to right, #10B981, #3B82F6, #EF4444, #FBBF24, #F472B6, #10B981);
-            background-size: 300% 300%;
+        50% {
+          background-position: 100% 50%;
         }
 
-        header,
-        footer {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 1rem;
+        100% {
+          background-position: 0% 50%;
         }
+      }
 
-        nav a {
-            margin: 0 0.5rem;
-            color: #3B82F6;
-            text-decoration: none;
-            text-align: center;
-            font-weight: bold;
-        }
+      body {
+        animation: gradientAnimation 10s ease infinite;
+        background: linear-gradient(
+          to right,
+          #10b981,
+          #3b82f6,
+          #ef4444,
+          #fbbf24,
+          #f472b6,
+          #10b981
+        );
+        background-size: 300% 300%;
+      }
 
-        nav a:hover {
-            text-decoration: underline;
-        }
+      header,
+      footer {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 1rem;
+      }
 
-        .json-key {
-            color: #92278f;
-        }
+      nav a {
+        margin: 0 0.5rem;
+        color: #3b82f6;
+        text-decoration: none;
+        text-align: center;
+        font-weight: bold;
+      }
 
-        .json-string {
-            color: #3ab54a;
-        }
+      nav a:hover {
+        text-decoration: underline;
+      }
 
-        .json-number {
-            color: #25aae2;
-        }
+      pre {
+        white-space: pre-wrap;
+        white-space: -moz-pre-wrap;
+        white-space: -pre-wrap;
+        white-space: -o-pre-wrap;
+        word-wrap: break-word;
+      }
 
-        .json-boolean {
-            color: #f98280;
-        }
+      .json-key {
+        color: #92278f;
+      }
+
+      .json-string {
+        color: #3ab54a;
+      }
+
+      .json-number {
+        color: #25aae2;
+      }
+
+      .json-boolean {
+        color: #f98280;
+      }
     </style>
-</head>
+  </head>
 
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
-    <header class="w-full flex items-center justify-between rounded mb-4  w-full md:max-w-screen-lg">
-        <nav>
-            <a href="/">Home</a>
-            <a href="/docs">Documentation</a>
-        </nav>
+  <body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <header
+      class="w-full flex items-center justify-between rounded mb-4 w-full md:max-w-screen-lg"
+    >
+      <nav>
+        <a href="/">Home</a>
+        <a href="/docs">Documentation</a>
+      </nav>
     </header>
     <div class="bg-white p-8 rounded shadow-md w-full md:max-w-screen-lg">
-        <div>
-            <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">API Documentation</h1>
-        </div>
+      <div>
+        <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">
+          API Documentation
+        </h1>
+      </div>
 
-        <div class="mb-6">
-            <p class="text-xl font-semibold mb-2">Security & Limits</p>
-            <ul class="list-disc pl-4">
-                <li><strong>Basic security middleware:</strong> We implement basic security measures to protect against common vulnerabilities.</li>
-                <li><strong>Request Body Limit:</strong> We limit the request to <i><u>2 megabytes</u></i> to save our server bandwidth.</li>
-                <li><strong>Rate Limiter:</strong> Each user is limited to <i><u>20 requests per second</u></i> to prevent abuse and ensure fair usage.</li>
-                <li><strong>Timeout:</strong> Requests are set to timeout after <i><u>30 seconds</u></i> to prevent prolonged processing and ensure responsiveness.</li>
-            </ul>
-        </div>
+      <div class="mb-6">
+        <p class="text-xl font-semibold mb-2">Security & Limits</p>
+        <ul class="list-disc pl-4">
+          <li>
+            <strong>Basic security middleware:</strong> We implement basic
+            security measures to protect against common vulnerabilities.
+          </li>
+          <li>
+            <strong>Request Body Limit:</strong> We limit the request to
+            <i><u>2 megabytes</u></i> to save our server bandwidth.
+          </li>
+          <li>
+            <strong>Rate Limiter:</strong> Each user is limited to
+            <i><u>20 requests per second</u></i> to prevent abuse and ensure
+            fair usage.
+          </li>
+          <li>
+            <strong>Timeout:</strong> Requests are set to timeout after
+            <i><u>30 seconds</u></i> to prevent prolonged processing and ensure
+            responsiveness.
+          </li>
+        </ul>
+      </div>
 
-        <p class="text-sm font-semibold text-gray-700 mb-6">
-            Detailed information about each API endpoint, including required parameters and response formats.
+      <p class="text-sm font-semibold text-gray-700 mb-6">
+        Detailed information about each API endpoint, including required
+        parameters and response formats.
+      </p>
+
+      <div id="apiDocs" class="space-y-8">
+        <!-- API documentation will be generated here -->
+      </div>
+
+      <footer class="text-center text-gray-500 text-sm mt-8">
+        <p>
+          Made with
+          <a href="https://go.dev"
+            ><img
+              src="/images/Go-Logo_Black.svg"
+              alt="Go"
+              class="w-10 h-10 inline-block align-middle"
+          /></a>
+          <a href="https://echo.labstack.com/"
+            ><img
+              src="/images/echo-logo-light.svg"
+              alt="Echo"
+              class="w-10 h-10 inline-block align-middle" /></a
+          >&nbsp;❤️ by
+          <a href="https://www.iamickdev.com" target="_blank" class="underline"
+            >iamickdev</a
+          >
         </p>
-
-        <div id="apiDocs" class="space-y-8">
-            <!-- API documentation will be generated here -->
-        </div>
-
-        <footer class="text-center text-gray-500 text-sm mt-8">
-            <p>Made with <a href="https://go.dev"><img src="/images/Go-Logo_Black.svg" alt="Go"
-                        class="w-10 h-10 inline-block align-middle"></a>
-                <a href="https://echo.labstack.com/"><img src="/images/echo-logo-light.svg" alt="Echo"
-                        class="w-10 h-10 inline-block align-middle"></a>&nbsp;❤️ by <a href="https://www.iamickdev.com"
-                    target="_blank" class="underline">iamickdev</a>
-            </p>
-            <p class="mt-4">
-                <a href="https://github.com/arnonsang/badwords"><img src="/images/github-mark.svg" alt="GitHub"
-                        class="w-4 h-4 inline-block align-middle"></a>
-            </p>
-        </footer>
+        <p class="mt-4">
+          <a href="https://github.com/arnonsang/badwords"
+            ><img
+              src="/images/github-mark.svg"
+              alt="GitHub"
+              class="w-4 h-4 inline-block align-middle"
+          /></a>
+        </p>
+      </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        const apiEndpoints = [
-            {
-                method: 'GET',
-                endpoint: '/healthz',
-                description: 'Health check endpoint',
-                params: {},
-                response: 'OK (string)'
-            },
-            {
-                method: 'GET',
-                endpoint: '/api/word',
-                description: 'Get a random bad word or multiple bad words',
-                params: {
-                    n: 'number (optional, query parameter) - Number of words to return, default is 1'
-                },
-                response: {
-                    status: 'number',
-                    error: 'string (optional)',
-                    word: ['string']
-                }
-            },
-            {
-                method: 'GET',
-                endpoint: '/api/words',
-                description: 'Get a list of all bad words',
-                params: {},
-                response: {
-                    status: 'number',
-                    count: 'number',
-                    words: ['string']
-                }
-            },
-            {
-                method: 'GET',
-                endpoint: '/api/word/:word',
-                description: 'Check if a word is a bad word',
-                params: {
-                    word: 'string (required, path parameter) - Word to check'
-                },
-                response: {
-                    status: 'number',
-                    word: 'string',
-                    isBad: 'boolean'
-                }
-            },
-            {
-                method: 'GET',
-                endpoint: '/api/sentence/:sentence',
-                description: 'Check if a sentence contains bad words',
-                params: {
-                    sentence: 'string (required, path parameter) - Sentence to check'
-                },
-                response: {
-                    status: 'number',
-                    sentence: 'string',
-                    count: 'number',
-                    badWords: ['string']
-                }
-            },
-            {
-                method: 'POST',
-                endpoint: '/api/sentence',
-                description: 'Check if a sentence contains bad words',
-                params: {
-                    sentence: 'string (required, in request body JSON) - Sentence to check'
-                },
-                response: {
-                    status: 'number',
-                    sentence: 'string',
-                    count: 'number',
-                    badWords: ['string']
-                }
-            },
-            {
-                method: 'GET',
-                endpoint: '/api/replacer/:sentence',
-                description: 'Replace bad words in a sentence with asterisks',
-                params: {
-                    sentence: 'string (required, path parameter) - Sentence to check'
-                },
-                response: {
-                    status: 'number',
-                    sentence: 'string',
-                    count: 'number',
-                    badWords: ['string'],
-                    replaced: 'string'
-                }
-            },
-            {
-                method: 'POST',
-                endpoint: '/api/replacer',
-                description: 'Replace bad words in a sentence with asterisks or custom replacer',
-                params: {
-                    sentence: 'string (required, in request body JSON) - Sentence to check',
-                    replacer: 'string (optional, query parameter) - Custom replacement string'
-                },
-                response: {
-                    status: 'number',
-                    sentence: 'string',
-                    count: 'number',
-                    badWords: ['string'],
-                    replaced: 'string'
-                }
-            }
-        ];
+      const apiEndpoints = [
+        {
+          method: "GET",
+          endpoint: "/healthz",
+          description: "Health check endpoint",
+          params: {},
+          response: "OK (string)",
+        },
+        {
+          method: "GET",
+          endpoint: "/api/word",
+          description: "Get a random bad word or multiple bad words",
+          params: {
+            n: "number (optional, query parameter) - Number of words to return, default is 1",
+          },
+          response: {
+            status: "number",
+            error: "string (optional)",
+            word: ["string"],
+          },
+        },
+        {
+          method: "GET",
+          endpoint: "/api/words",
+          description: "Get a list of all bad words",
+          params: {},
+          response: {
+            status: "number",
+            count: "number",
+            words: ["string"],
+          },
+        },
+        {
+          method: "GET",
+          endpoint: "/api/word/:word",
+          description: "Check if a word is a bad word",
+          params: {
+            word: "string (required, path parameter) - Word to check",
+          },
+          response: {
+            status: "number",
+            word: "string",
+            isBad: "boolean",
+          },
+        },
+        {
+          method: "GET",
+          endpoint: "/api/sentence/:sentence",
+          description: "Check if a sentence contains bad words",
+          params: {
+            sentence: "string (required, path parameter) - Sentence to check",
+          },
+          response: {
+            status: "number",
+            sentence: "string",
+            count: "number",
+            badWords: ["string"],
+          },
+        },
+        {
+          method: "POST",
+          endpoint: "/api/sentence",
+          description: "Check if a sentence contains bad words",
+          params: {
+            sentence:
+              "string (required, in request body JSON) - Sentence to check",
+          },
+          response: {
+            status: "number",
+            sentence: "string",
+            count: "number",
+            badWords: ["string"],
+          },
+        },
+        {
+          method: "GET",
+          endpoint: "/api/replacer/:sentence",
+          description: "Replace bad words in a sentence with asterisks",
+          params: {
+            sentence: "string (required, path parameter) - Sentence to check",
+          },
+          response: {
+            status: "number",
+            sentence: "string",
+            count: "number",
+            badWords: ["string"],
+            replaced: "string",
+          },
+        },
+        {
+          method: "POST",
+          endpoint: "/api/replacer",
+          description:
+            "Replace bad words in a sentence with asterisks or custom replacer",
+          params: {
+            sentence:
+              "string (required, in request body JSON) - Sentence to check",
+            replacer:
+              "string (optional, query parameter) - Custom replacement string",
+          },
+          response: {
+            status: "number",
+            sentence: "string",
+            count: "number",
+            badWords: ["string"],
+            replaced: "string",
+          },
+        },
+      ];
 
-        const copyToClipboard = (text) => {
-            const el = document.createElement('textarea');
-            el.value = text;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
+      const copyToClipboard = (text) => {
+        const el = document.createElement("textarea");
+        el.value = text;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
+      };
+
+      const methodColor = (method) => {
+        switch (method) {
+          case "GET":
+            return "green";
+          case "POST":
+            return "yellow";
+          case "PUT":
+            return "blue";
+          case "DELETE":
+            return "red";
+          default:
+            return "gray";
         }
+      };
 
-        const methodColor = (method) => {
-            switch (method) {
-                case 'GET':
-                    return 'green';
-                case 'POST':
-                    return 'yellow';
-                case 'PUT':
-                    return 'blue';
-                case 'DELETE':
-                    return 'red';
-                default:
-                    return 'gray';
-            }
-        }
+      const generateApiDocs = () => {
+        const apiDocsContainer = document.getElementById("apiDocs");
+        apiEndpoints.forEach((endpoint) => {
+          const endpointDiv = document.createElement("div");
+          endpointDiv.classList.add("space-y-4");
+          endpointDiv.classList.add("p-4");
+          endpointDiv.classList.add("hover:shadow-md");
+          endpointDiv.classList.add(
+            `hover:bg-${methodColor(endpoint.method)}-100`
+          );
+          endpointDiv.classList.add("rounded");
+          endpointDiv.classList.add("transition");
+          endpointDiv.classList.add("duration-300");
+          endpointDiv.classList.add("ease-in-out");
+          endpointDiv.classList.add("cursor-pointer");
+          endpointDiv.classList.add("hover:cursor-pointer");
+          endpointDiv.classList.add("max-w-full");
+          endpointDiv.classList.add("overflow-x-auto");
+          endpointDiv.addEventListener("click", () => {
+            const hostname = window.location.origin;
+            copyToClipboard(`${hostname}${endpoint.endpoint}`);
+            Swal.fire({
+              title: "Copied!",
+              text: `${endpoint.endpoint} copied to clipboard`,
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+              timerProgressBar: true,
+              toast: true,
+              position: "top-right",
+            });
+          });
 
-        const generateApiDocs = () => {
-            const apiDocsContainer = document.getElementById('apiDocs');
-            apiEndpoints.forEach(endpoint => {
-                const endpointDiv = document.createElement('div');
-                endpointDiv.classList.add('space-y-4');
-                endpointDiv.classList.add('p-4');
-                endpointDiv.classList.add('hover:shadow-md');
-                endpointDiv.classList.add(`hover:bg-${methodColor(endpoint.method)}-100`);
-                endpointDiv.classList.add('rounded');
-                endpointDiv.classList.add('transition');
-                endpointDiv.classList.add('duration-300');
-                endpointDiv.classList.add('ease-in-out');
-                endpointDiv.classList.add('cursor-pointer');
-                endpointDiv.classList.add('hover:cursor-pointer');
-                endpointDiv.classList.add('max-w-full');
-                endpointDiv.classList.add('overflow-x-auto');
-                endpointDiv.addEventListener('click', () => {
-                    const hostname = window.location.origin;
-                    copyToClipboard(`${hostname}${endpoint.endpoint}`);
-                    Swal.fire({
-                        title: 'Copied!',
-                        text: `${endpoint.endpoint} copied to clipboard`,
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 1500,
-                        timerProgressBar: true,
-                        toast: true,
-                        position: 'top-right'
-                    });
-                });
-
-                endpointDiv.innerHTML = `
-                    <h2 class="text-2xl font-bold mb-2" id="${endpoint.endpoint}"><span class="text-${methodColor(endpoint.method)}-500">${endpoint.method}</span> <a href="${endpoint.endpoint}" class="hover:underline">${endpoint.endpoint}</a></h2>
+          endpointDiv.innerHTML = `
+                    <h2 class="text-2xl font-bold mb-2" id="${
+                      endpoint.endpoint
+                    }"><span class="text-${methodColor(endpoint.method)}-500">${
+            endpoint.method
+          }</span> <a href="${endpoint.endpoint}" class="hover:underline">${
+            endpoint.endpoint
+          }</a></h2>
                     <p class="mb-2">${endpoint.description}</p>
                     <h3 class="text-xl font-semibold mb-2">Parameters:</h3>
-                    <pre class="bg-gray-100 p-2 rounded mb-2">${JSON.stringify(endpoint.params, null, 2)}</pre>
+                    <pre class="bg-gray-100 p-2 rounded mb-2 max-w-full overflow-x-auto">${JSON.stringify(
+                      endpoint.params,
+                      null,
+                      2
+                    )}</pre>
                     <h3 class="text-xl font-semibold mb-2">Response:</h3>
-                    <pre class="bg-gray-100 p-2 rounded">${formatJSON(JSON.stringify(endpoint.response, null, 2))}</pre>
+                    <pre class="bg-gray-100 p-2 rounded">${formatJSON(
+                      JSON.stringify(endpoint.response, null, 2)
+                    )}</pre>
                     <hr class="my-8">
                 `;
-                apiDocsContainer.appendChild(endpointDiv);
-            });
-        }
+          apiDocsContainer.appendChild(endpointDiv);
+        });
+      };
 
-        const formatJSON = (json) => {
-            return json.replace(/"(\w+)":/g, '<span class="json-key">"$1":</span>')
-                .replace(/"([^"]+)"(?=[,\]}])/g, '<span class="json-string">"$1"</span>')
-                .replace(/\b(\d+)\b/g, '<span class="json-number">$1</span>')
-                .replace(/\b(true|false)\b/g, '<span class="json-boolean">$1</span>');
-        }
+      const formatJSON = (json) => {
+        return json
+          .replace(/"(\w+)":/g, '<span class="json-key">"$1":</span>')
+          .replace(
+            /"([^"]+)"(?=[,\]}])/g,
+            '<span class="json-string">"$1"</span>'
+          )
+          .replace(/\b(\d+)\b/g, '<span class="json-number">$1</span>')
+          .replace(/\b(true|false)\b/g, '<span class="json-boolean">$1</span>');
+      };
 
-        window.addEventListener('DOMContentLoaded', generateApiDocs);
+      window.addEventListener("DOMContentLoaded", generateApiDocs);
     </script>
-</body>
-
+  </body>
 </html>
