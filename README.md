@@ -4,7 +4,7 @@
 
 ![Logo](static/favicon-32x32.png)
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![GitHub stars](https://img.shields.io/github/stars/arnonsang/badwords.svg?style=social)](https://github.com/arnonsang/badwords/stargazers) [![GitHub issues](https://img.shields.io/github/issues/arnonsang/badwords.svg)](https://github.com/arnonsang/badwords/issues) ![GitHub pull requests](https://img.shields.io/github/issues-pr/arnonsang/badwords.svg) ![Visitors](https://visitor-badge.glitch.me/badge?page_id=arnonsang.badwords)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![GitHub stars](https://img.shields.io/github/stars/arnonsang/badwords.svg?style=social)](https://github.com/arnonsang/badwords/stargazers) [![GitHub issues](https://img.shields.io/github/issues/arnonsang/badwords.svg)](https://github.com/arnonsang/badwords/issues) ![GitHub pull requests](https://img.shields.io/github/issues-pr/arnonsang/badwords.svg)
 
 A simple and lightweight API for filtering and checking bad words, built with [Go](https://go.dev/) and [Echo](https://echo.labstack.com/).
 
