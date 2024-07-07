@@ -64,7 +64,8 @@ func (s *Server) setupRoutes() {
 	s.e.GET("/api/replacer/:sentence", s.sentenceReplacer)
 	s.e.POST("/api/replacer", s.sentenceReplacer)
 	s.e.GET("/healthz", func(c echo.Context) error {
-		return c.String(http.StatusOK, "OK")
+		res := map[string]string{"status": "ok"}
+		return c.JSON(http.StatusOK, res)
 	})
 }
 
@@ -75,7 +76,7 @@ func (s *Server) getWord(c echo.Context) error {
 		n = 1
 	}
 	if n < 1 {
-		c.JSON(http.StatusBadRequest, "n must be greater than 0")
+		c.JSON(http.StatusBadRequest, map[string]string{"error": "n must be greater than 0"})
 	}
 	return c.JSON(http.StatusOK, s.usecase.GetWord(n))
 }
