@@ -40,11 +40,11 @@ func (s *Server) setupMiddleware() {
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{http.MethodGet, http.MethodPost},
 	}))
-	// s.e.Use(middleware.Secure())
-	// s.e.Use(middleware.RequestID())
-	// s.e.Use(middleware.CSRF())
-	// s.e.Use(middleware.Gzip())
-	// s.e.Use(middleware.Decompress())
+	s.e.Use(middleware.Secure())
+	s.e.Use(middleware.RequestID())
+	s.e.Use(middleware.CSRF())
+	s.e.Use(middleware.Gzip())
+	s.e.Use(middleware.Decompress())
 	s.e.Use(middleware.BodyLimit("2M"))
 	s.e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(20)))
 	s.e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{
@@ -66,12 +66,9 @@ func (s *Server) setupRoutes() {
 	s.e.POST("/api/sentence", s.checkSentence)
 	s.e.GET("/api/replacer/:sentence", s.sentenceReplacer)
 	s.e.POST("/api/replacer", s.sentenceReplacer)
-	s.e.GET("/healthz", func(c echo.Context) error {
+	s.e.Any("/healthz", func(c echo.Context) error {
 		res := map[string]string{"status": "ok"}
 		return c.JSON(http.StatusOK, res)
-	})
-	s.e.HEAD("/healthz", func(c echo.Context) error {
-		return c.NoContent(http.StatusOK)
 	})
 }
 
