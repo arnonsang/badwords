@@ -14,7 +14,7 @@ services:
       - ENV_VAR=value
     restart: unless-stopped
     healthcheck:
-      test: ["curl", "-f", "http://localhost:8089/healthz"]
+      test: ["CMD", "curl", "-f", "http://localhost:8089/healthz"]
       interval: 15m
       timeout: 10s
       retries: 5
