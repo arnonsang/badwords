@@ -36,21 +36,24 @@ func (s *Server) Start(address string) error {
 func (s *Server) setupMiddleware() {
 	s.e.Use(middleware.Logger())
 	s.e.Use(middleware.Recover())
-	s.e.Use(middleware.CORS())
-	s.e.Use(middleware.Secure())
-	s.e.Use(middleware.RequestID())
-	s.e.Use(middleware.CSRF())
-	s.e.Use(middleware.Gzip())
-	s.e.Use(middleware.Decompress())
+	s.e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodPost},
+	}))
+	// s.e.Use(middleware.Secure())
+	// s.e.Use(middleware.RequestID())
+	// s.e.Use(middleware.CSRF())
+	// s.e.Use(middleware.Gzip())
+	// s.e.Use(middleware.Decompress())
 	s.e.Use(middleware.BodyLimit("2M"))
 	s.e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(20)))
 	s.e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{
 		Skipper:      middleware.DefaultSkipper,
-		ErrorMessage: "Request timeout after 30 seconds, please try again later",
+		ErrorMessage: "Request timeout after 60 seconds, please try again later",
 		OnTimeoutRouteErrorHandler: func(err error, c echo.Context) {
 			log.Println(c.Path())
 		},
-		Timeout: 30 * time.Second,
+		Timeout: 60 * time.Second,
 	}))
 }
 
@@ -66,6 +69,9 @@ func (s *Server) setupRoutes() {
 	s.e.GET("/healthz", func(c echo.Context) error {
 		res := map[string]string{"status": "ok"}
 		return c.JSON(http.StatusOK, res)
+	})
+	s.e.HEAD("/healthz", func(c echo.Context) error {
+		return c.NoContent(http.StatusOK)
 	})
 }
 
